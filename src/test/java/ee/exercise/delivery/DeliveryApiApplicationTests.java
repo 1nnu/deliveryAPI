@@ -1,4 +1,4 @@
-package ee.exercise.deliveryAPI;
+package ee.exercise.delivery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

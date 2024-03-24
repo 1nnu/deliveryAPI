@@ -1,8 +1,8 @@
-package ee.exercise.deliveryAPI.weatherScraperTest;
+package ee.exercise.delivery.weatherScraperTest;
 
 
-import ee.exercise.deliveryAPI.data.WeatherData;
-import ee.exercise.deliveryAPI.data.WeatherRepository;
+import ee.exercise.delivery.weather.WeatherData;
+import ee.exercise.delivery.weather.WeatherRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

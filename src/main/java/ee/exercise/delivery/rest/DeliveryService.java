@@ -1,11 +1,10 @@
-package ee.exercise.deliveryAPI.rest;
+package ee.exercise.delivery.rest;
 
-import ee.exercise.deliveryAPI.data.WeatherData;
-import ee.exercise.deliveryAPI.data.WeatherRepository;
+import ee.exercise.delivery.weather.WeatherData;
+import ee.exercise.delivery.weather.WeatherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
