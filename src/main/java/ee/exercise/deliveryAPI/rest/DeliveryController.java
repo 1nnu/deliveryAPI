@@ -1,6 +1,6 @@
 package ee.exercise.deliveryAPI.rest;
 
-import ee.exercise.deliveryAPI.WeatherData;
+import ee.exercise.deliveryAPI.data.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

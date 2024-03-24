@@ -1,15 +1,14 @@
 package ee.exercise.deliveryAPI.weatherScraper;
 
 
-import ee.exercise.deliveryAPI.WeatherData;
-import ee.exercise.deliveryAPI.WeatherRepository;
+import ee.exercise.deliveryAPI.data.WeatherData;
+import ee.exercise.deliveryAPI.data.WeatherRepository;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

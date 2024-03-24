@@ -1,7 +1,7 @@
 package ee.exercise.deliveryAPI.rest;
 
-import ee.exercise.deliveryAPI.WeatherData;
-import ee.exercise.deliveryAPI.WeatherRepository;
+import ee.exercise.deliveryAPI.data.WeatherData;
+import ee.exercise.deliveryAPI.data.WeatherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

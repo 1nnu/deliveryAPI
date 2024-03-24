@@ -1,9 +1,8 @@
 package ee.exercise.deliveryAPI.weatherScraper;
 
-import ee.exercise.deliveryAPI.WeatherData;
+import ee.exercise.deliveryAPI.data.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashSet;

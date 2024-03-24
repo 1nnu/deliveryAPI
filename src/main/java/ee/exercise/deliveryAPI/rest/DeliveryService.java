@@ -1,7 +1,7 @@
 package ee.exercise.deliveryAPI.rest;
 
-import ee.exercise.deliveryAPI.WeatherData;
-import ee.exercise.deliveryAPI.WeatherRepository;
+import ee.exercise.deliveryAPI.data.WeatherData;
+import ee.exercise.deliveryAPI.data.WeatherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,13 +43,7 @@ public class DeliveryService {
                 city = "Tartu-Tõravere";
                 break;
         }
-        ArrayList<WeatherData> weatherData = (ArrayList<WeatherData>) weatherRepository.findAll();
-        for (int i = weatherData.size() - 1; i >= 0; i--){
-            if (weatherData.get(i).getStationName().equalsIgnoreCase(city)){
-                return weatherData.get(i);
-            }
-        }
-        return null;
+        return weatherRepository.findLastCityByName(city);
     }
 
     public float calculateAirTemperatureFee(WeatherData weatherData){
