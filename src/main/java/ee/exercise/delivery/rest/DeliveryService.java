@@ -1,94 +1,104 @@
 package ee.exercise.delivery.rest;
 
+import ee.exercise.delivery.rest.exceptions.BadWeatherException;
+import ee.exercise.delivery.rest.exceptions.InvalidInputException;
 import ee.exercise.delivery.weather.WeatherData;
 import ee.exercise.delivery.weather.WeatherRepository;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class DeliveryService {
 
   private final WeatherRepository weatherRepository;
 
+  private final JdbcTemplate jdbcTemplate;
 
-    public DeliveryService(WeatherRepository weatherRepository) {
-        this.weatherRepository = weatherRepository;
-    }
+  private final HashMap<String, String> endpointToCityHashMap;
 
-    public Float calculateRegionalBaseFee(String city, String vehicle) {
-    Map<String, Map<String, Float>> baseFees = new HashMap<>();
-    baseFees.put("tallinn", Map.of("car", 4.0F, "scooter", 4.0F, "bike", 4.0F));
-    baseFees.put("tartu", Map.of("car", 3.5F, "scooter", 3.0F, "bike", 2.5F));
-    baseFees.put("parnu", Map.of("car", 3.0F, "scooter", 2.5F, "bike", 2.0F));
-
-    Map<String, Float> cityFees = baseFees.get(city);
-    if (cityFees != null) {
-      Float baseFee = cityFees.get(vehicle);
-      if (baseFee != null) {
-        return baseFee;
-      }
-    }
-        return null;
-    }
-
-  public WeatherData getLatestWeatherData(String city) {
-    switch (city) {
-      case "tallinn":
-        city = "Tallinn-Harku";
-        break;
-      case "parnu":
-        city = "Pärnu";
-        break;
-      case "tartu":
-        city = "Tartu-Tõravere";
-        break;
-    }
-    return weatherRepository.findLastCityByName(city);
+  public DeliveryService(
+      WeatherRepository weatherRepository,
+      JdbcTemplate jdbcTemplate,
+      Map<String, String> endpointToCityHashMap) {
+    this.weatherRepository = weatherRepository;
+    this.jdbcTemplate = jdbcTemplate;
+    this.endpointToCityHashMap = (HashMap<String, String>) endpointToCityHashMap;
   }
 
-  public float calculateAirTemperatureFee(WeatherData weatherData) {
-    float airTemp = weatherData.getAirTemperature();
-    if (airTemp < -10) {
+  private Float calculateRegionalBaseFee(String city, String vehicle) {
+    try {
+      RegionalBaseFee regionalBaseFee = getBaseFee(city);
+      return switch (vehicle) {
+        case "car" -> regionalBaseFee.getCarFee();
+        case "scooter" -> regionalBaseFee.getScooterFee();
+        case "bike" -> regionalBaseFee.getBikeFee();
+        default -> throw new InvalidInputException("Provided input is invalid");
+      };
+    } catch (Exception e) {
+      throw new InvalidInputException("Provided input is invalid");
+    }
+  }
+
+  private RegionalBaseFee getBaseFee(String city) {
+    String sql =
+        String.format(
+            "SELECT BIKE_FEE, CAR_FEE, SCOOTER_FEE, CITY FROM REGIONAL_BASE_FEE WHERE city = '%s'",
+            city);
+    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(RegionalBaseFee.class)).getFirst();
+  }
+
+  private float calculateAirTemperatureFee(float airTemperature) {
+    if (airTemperature < -10) {
       return 1.0F;
-    } else if (airTemp < 0) {
+    } else if (airTemperature < 0) {
       return 0.5F;
     } else {
       return 0.0F;
     }
   }
 
-  public String calculateWeatherPhenomenonFee(WeatherData weatherData) {
-    String phenomenon = weatherData.getWeatherPhenomenon().toLowerCase();
+  private Float calculateWeatherPhenomenonFee(String phenomenon) {
     if (phenomenon.contains("glaze")
         || phenomenon.contains("hail")
         || phenomenon.contains("thunder")) {
-      return "Usage of selected vehicle type is forbidden";
+      throw new BadWeatherException("Usage of selected vehicle type is forbidden");
     } else if (phenomenon.contains("snow") || phenomenon.contains("sleet")) {
-      return String.valueOf(1.0F);
+      return 1.0F;
     } else if (phenomenon.contains("rain")
         || phenomenon.contains("shower")
         || phenomenon.contains("drizzle")) {
-      return String.valueOf(0.5F);
+      return 0.5F;
     } else {
-      return String.valueOf(0.0F);
+      return 0.0F;
     }
   }
 
-  public String calculateWindSpeedFee(WeatherData weatherData) {
-    float windSpeed = weatherData.getWindSpeed();
+  private float calculateWindSpeedFee(float windSpeed) {
     if (windSpeed > 20) {
-      return "Usage of selected vehicle type is forbidden";
+      throw new BadWeatherException("Usage of selected vehicle type is forbidden");
     } else if (windSpeed > 10) {
-      return String.valueOf(0.5F);
+      return 0.5F;
     } else {
-      return String.valueOf(0F);
+      return 0F;
     }
   }
 
   public String calculateFee(String city, String vehicle) {
-        Float fee = 0.0F;
-        fee += calculateRegionalBaseFee(city, vehicle);
-      return String.valueOf(fee);
+    Float fee = 0.0F;
+    fee += calculateRegionalBaseFee(city, vehicle);
+    WeatherData weatherData = weatherRepository.findLastCityByName(endpointToCityHashMap.get(city));
+    if (vehicle.equals("scooter") || vehicle.equals("bike")) {
+      fee += calculateAirTemperatureFee(weatherData.getAirTemperature());
+      fee += calculateWeatherPhenomenonFee(weatherData.getWeatherPhenomenon());
+    }
+    if (vehicle.equals("bike")) {
+      fee += calculateWindSpeedFee(weatherData.getWindSpeed());
+    }
+    return String.valueOf(fee);
   }
 }

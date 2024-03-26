@@ -1,5 +1,7 @@
 package ee.exercise.delivery.rest;
 
+import ee.exercise.delivery.rest.exceptions.BadWeatherException;
+import ee.exercise.delivery.rest.exceptions.InvalidInputException;
 import ee.exercise.delivery.rest.exceptions.ResourceNotFoundException;
 import ee.exercise.delivery.weather.WeatherData;
 import ee.exercise.delivery.weather.WeatherService;
@@ -30,7 +32,7 @@ public class DeliveryController {
   public String calculateDeliveryFee(@PathVariable String city, @PathVariable String vehicle) {
     try {
       return deliveryService.calculateFee(city, vehicle);
-    } catch (ResourceNotFoundException e) {
+    } catch (ResourceNotFoundException | BadWeatherException | InvalidInputException e) {
       return e.getMessage();
     }
   }
