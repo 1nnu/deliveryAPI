@@ -69,6 +69,7 @@ public class WeatherService {
   //Done manually due to UTF-8 encoding not passing when using data.sql statements
   public void insertWeatherLocations() {
     jdbcTemplate.update(
-        "INSERT INTO WEATHER_STATION (ID, STATION_NAME) VALUES (1, 'Tallinn-Harku'), (2, 'Tartu-Tõravere'), (3, 'Pärnu');\n");
+        "INSERT INTO WEATHER_STATION (ID, STATION_NAME) VALUES (1, 'Tallinn-Harku'), (2, 'Tartu-Tõravere'), (3, 'Pärnu');");
+    log.info("Inserted info into WEATHER_STATION database");
   }
 }

@@ -1,0 +1,1 @@
+insert into REGIONAL_BASE_FEE (city, car_fee, scooter_fee, bike_fee) VALUES ('tallinn', 4.0, 3.5, 3.0), ('tartu', 3.5, 3.0, 2.5), ('parnu', 3.0, 2.5, 2);

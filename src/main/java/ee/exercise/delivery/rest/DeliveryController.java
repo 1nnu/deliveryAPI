@@ -1,5 +1,6 @@
 package ee.exercise.delivery.rest;
 
+import ee.exercise.delivery.rest.exceptions.ResourceNotFoundException;
 import ee.exercise.delivery.weather.WeatherData;
 import ee.exercise.delivery.weather.WeatherService;
 import java.util.List;
@@ -27,30 +28,10 @@ public class DeliveryController {
 
   @PostMapping("/delivery/{city}/{vehicle}")
   public String calculateDeliveryFee(@PathVariable String city, @PathVariable String vehicle) {
-    float fee = 0.0F;
-    vehicle = vehicle.toLowerCase();
-    city = city.toLowerCase();
-    String regionalBaseFee = deliveryService.calculateRegionalBaseFee(city, vehicle);
-    if (regionalBaseFee.equals("No such city available")) {
-      return regionalBaseFee;
+    try {
+      return deliveryService.calculateFee(city, vehicle);
+    } catch (ResourceNotFoundException e) {
+      return e.getMessage();
     }
-    fee += Float.parseFloat(regionalBaseFee);
-    WeatherData weatherData = deliveryService.getLatestWeatherData(city);
-    if (vehicle.equals("scooter") || vehicle.equals("bike")) {
-      fee += deliveryService.calculateAirTemperatureFee(weatherData);
-      String weatherPhenomenonFee = deliveryService.calculateWeatherPhenomenonFee(weatherData);
-      if (weatherPhenomenonFee.equals("Usage of selected vehicle type is forbidden")) {
-        return weatherPhenomenonFee;
-      }
-      fee += Float.parseFloat(weatherPhenomenonFee);
-    }
-    if (vehicle.equals("bike")) {
-      String windSpeedFee = deliveryService.calculateWindSpeedFee(weatherData);
-      if (windSpeedFee.equals("Usage of selected vehicle type is forbidden")) {
-        return windSpeedFee;
-      }
-      fee += Float.parseFloat(windSpeedFee);
-    }
-    return String.valueOf(fee);
   }
 }
