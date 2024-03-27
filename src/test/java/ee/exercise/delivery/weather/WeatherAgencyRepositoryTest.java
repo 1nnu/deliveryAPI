@@ -14,6 +14,7 @@ class WeatherAgencyRepositoryTest {
 
   private static final String WEATHER_AGENCY_URL =
       "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
+
   private final RestTemplate restTemplate = mock(RestTemplate.class);
   private final WeatherAgencyRepository weatherAgencyRepository =
       new WeatherAgencyRepository(restTemplate);

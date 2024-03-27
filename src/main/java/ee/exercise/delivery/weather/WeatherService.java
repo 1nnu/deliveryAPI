@@ -3,7 +3,6 @@ package ee.exercise.delivery.weather;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -25,10 +24,6 @@ public class WeatherService {
     this.weatherRepository = weatherRepository;
     this.weatherAgencyRepository = weatherAgencyRepository;
     this.jdbcTemplate = jdbcTemplate;
-  }
-
-  public WeatherData saveWeatherData(WeatherData weatherData) {
-    return weatherRepository.save(weatherData);
   }
 
   public List<WeatherData> fetchWeatherDataList() {
@@ -66,7 +61,7 @@ public class WeatherService {
     return new HashSet<>(jdbcTemplate.queryForList(sql, String.class));
   }
 
-  //Done manually due to UTF-8 encoding not passing when using data.sql statements
+  // Done manually due to UTF-8 encoding not passing when using data.sql statements
   public void insertWeatherLocations() {
     jdbcTemplate.update(
         "INSERT INTO WEATHER_STATION (ID, STATION_NAME) VALUES (1, 'Tallinn-Harku'), (2, 'Tartu-Tõravere'), (3, 'Pärnu');");
