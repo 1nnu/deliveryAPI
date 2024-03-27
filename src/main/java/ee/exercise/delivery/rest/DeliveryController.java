@@ -24,8 +24,8 @@ public class DeliveryController {
   }
 
   /**
-   * Get endpoint for displaying current state of weatherdata
-   * in database
+   * Get endpoint for displaying current state of weatherdata in database
+   *
    * @return List of weatherdata entries
    */
   @GetMapping("/data")
@@ -34,8 +34,8 @@ public class DeliveryController {
   }
 
   /**
-   * API endpoint for users to input data
-   * Calculates fee based on city and vehicle type
+   * API endpoint for users to input data Calculates fee based on city and vehicle type
+   *
    * @param city
    * @param vehicle
    * @return String representation of the total fee

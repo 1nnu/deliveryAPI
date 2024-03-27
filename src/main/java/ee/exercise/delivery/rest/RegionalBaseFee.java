@@ -8,9 +8,8 @@ import lombok.Data;
 @Data
 public class RegionalBaseFee {
 
-    @Id
-    private String city;
-    private Float carFee;
-    private Float scooterFee;
-    private Float bikeFee;
+  @Id private String city;
+  private Float carFee;
+  private Float scooterFee;
+  private Float bikeFee;
 }

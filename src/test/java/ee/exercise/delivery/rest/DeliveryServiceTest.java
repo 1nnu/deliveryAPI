@@ -22,7 +22,7 @@ class DeliveryServiceTest {
   }
 
   @Test
-  void calculateRegionalBaseFee_incorrectVehicle() {
+  void calculateFee_incorrectVehicle() {
     String city = "tallinn";
     String incorrectVehicle = "boat";
     assertThrows(
@@ -34,13 +34,26 @@ class DeliveryServiceTest {
   }
 
   @Test
-  void calculateRegionalBaseFee_incorrectCity() {
+  void calculateFee_incorrectCity() {
     String incorrectCity = "New York";
     String vehicle = "car";
     assertThrows(
         InvalidInputException.class,
         () -> {
           deliveryService.calculateFee(incorrectCity, vehicle);
+        });
+  }
+
+  @Test
+  void calculateFee_noInput() {
+    String incorrectCity = null;
+    String vehicle = null;
+
+    assertThrows(
+        InvalidInputException.class,
+        () -> {
+          deliveryService.calculateFee(null, null);
+          ;
         });
   }
 }

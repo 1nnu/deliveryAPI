@@ -6,7 +6,6 @@ import ee.exercise.delivery.weather.WeatherData;
 import ee.exercise.delivery.weather.WeatherRepository;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
