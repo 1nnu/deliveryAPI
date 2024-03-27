@@ -83,8 +83,8 @@ public class DeliveryService {
   }
 
   /**
-   * Main service method for calculating the deliveryfee Call all other methods to in order to
-   * validate input and return fee
+   * Main service method for calculating the delivery fee. Call all other methods to in order to
+   * validate input and return fee.
    *
    * @param city
    * @param vehicle

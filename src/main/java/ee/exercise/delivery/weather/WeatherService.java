@@ -26,15 +26,20 @@ public class WeatherService {
     this.jdbcTemplate = jdbcTemplate;
   }
 
+  /**
+   * Fetches all data stored in the WeatherData db
+   *
+   * @return list of WeatherData entries
+   */
   public List<WeatherData> fetchWeatherDataList() {
-    List<WeatherData> list = (List<WeatherData>) weatherRepository.findAll();
-    for (WeatherData item : list) {
-      log.info(item.getStationName());
-    }
-    return list;
+    return (List<WeatherData>) weatherRepository.findAll();
   }
 
-  void fetchWeatherData() {
+  /**
+   * Gets observation data from the weather agency. For each weatherStation the application is
+   * using, make an entry from the observation data.
+   */
+  public void fetchWeatherData() {
     ObservationsResponse observationsResponse = weatherAgencyRepository.getWeatherObservations();
     Set<String> weatherStations = findStationNames();
 
