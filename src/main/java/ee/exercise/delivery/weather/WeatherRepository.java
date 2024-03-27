@@ -13,6 +13,6 @@ public interface WeatherRepository extends CrudRepository<WeatherData, Long> {
       "SELECT wd FROM WeatherData wd WHERE wd.stationName = :city AND wd.timestamp = (SELECT MAX(wd2.timestamp) FROM WeatherData wd2 WHERE wd2.stationName = :city)")
   WeatherData findLastCityByName(@Param("city") String city);
 
-  @Query("SELECT DISTINCT wd.stationName FROM WeatherData wd")
+  @Query("SELECT DISTINCT stationName FROM WeatherData")
   List<String> findAllDistinctNames();
 }

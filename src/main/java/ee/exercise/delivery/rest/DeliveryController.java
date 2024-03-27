@@ -23,11 +23,23 @@ public class DeliveryController {
     this.deliveryService = deliveryService;
   }
 
+  /**
+   * Get endpoint for displaying current state of weatherdata
+   * in database
+   * @return List of weatherdata entries
+   */
   @GetMapping("/data")
   public List<WeatherData> getWeatherDataList() {
     return weatherService.fetchWeatherDataList();
   }
 
+  /**
+   * API endpoint for users to input data
+   * Calculates fee based on city and vehicle type
+   * @param city
+   * @param vehicle
+   * @return String representation of the total fee
+   */
   @PostMapping("/delivery/{city}/{vehicle}")
   public String calculateDeliveryFee(@PathVariable String city, @PathVariable String vehicle) {
     try {

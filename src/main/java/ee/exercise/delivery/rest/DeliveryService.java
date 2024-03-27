@@ -5,6 +5,7 @@ import ee.exercise.delivery.rest.exceptions.InvalidInputException;
 import ee.exercise.delivery.weather.WeatherData;
 import ee.exercise.delivery.weather.WeatherRepository;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,15 +20,9 @@ public class DeliveryService {
 
   private final JdbcTemplate jdbcTemplate;
 
-  private final HashMap<String, String> endpointToCityHashMap;
-
-  public DeliveryService(
-      WeatherRepository weatherRepository,
-      JdbcTemplate jdbcTemplate,
-      Map<String, String> endpointToCityHashMap) {
+  public DeliveryService(WeatherRepository weatherRepository, JdbcTemplate jdbcTemplate) {
     this.weatherRepository = weatherRepository;
     this.jdbcTemplate = jdbcTemplate;
-    this.endpointToCityHashMap = (HashMap<String, String>) endpointToCityHashMap;
   }
 
   private Float calculateRegionalBaseFee(String city, String vehicle) {
@@ -88,9 +83,18 @@ public class DeliveryService {
     }
   }
 
+  /**
+   * Main service method for calculating the deliveryfee Call all other methods to in order to
+   * validate input and return fee
+   *
+   * @param city
+   * @param vehicle
+   * @return String representation of the total fee
+   */
   public String calculateFee(String city, String vehicle) {
     Float fee = 0.0F;
     fee += calculateRegionalBaseFee(city, vehicle);
+    HashMap<String, String> endpointToCityHashMap = getEndpointToCityHashMap();
     WeatherData weatherData = weatherRepository.findLastCityByName(endpointToCityHashMap.get(city));
     if (vehicle.equals("scooter") || vehicle.equals("bike")) {
       fee += calculateAirTemperatureFee(weatherData.getAirTemperature());
@@ -100,5 +104,21 @@ public class DeliveryService {
       fee += calculateWindSpeedFee(weatherData.getWindSpeed());
     }
     return String.valueOf(fee);
+  }
+
+  private HashMap<String, String> getEndpointToCityHashMap() {
+    List<String> namesList = weatherRepository.findAllDistinctNames();
+    HashMap<String, String> endpointToCityHashMap = new HashMap<>();
+    namesList.forEach(
+        (name ->
+            endpointToCityHashMap.put(
+                name.toLowerCase()
+                    .replace('ä', 'a')
+                    .replace('ö', 'o')
+                    .replace('õ', 'o')
+                    .replace('ü', 'u')
+                    .split("-")[0],
+                name)));
+    return endpointToCityHashMap;
   }
 }
