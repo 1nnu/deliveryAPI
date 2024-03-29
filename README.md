@@ -34,6 +34,7 @@ The structure of the endpoints
 
 Available cities: tallinn, tartu, parnu  
 Available vehicles: car, scooter, bike  
+Structure of request: (domain)/delivery/{city}/{vehicle}  
 
 ## Technologies Used
 
