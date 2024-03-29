@@ -30,7 +30,6 @@ class DeliveryServiceTest {
         InvalidInputException.class,
         () -> {
           deliveryService.calculateFee(city, incorrectVehicle);
-          ;
         });
   }
 
@@ -46,10 +45,7 @@ class DeliveryServiceTest {
   }
 
   @Test
-  void calculateFee_noInput() {
-    String incorrectCity = null;
-    String vehicle = null;
-
+  void calculateFee_inputIsNull() {
     assertThrows(
         InvalidInputException.class,
         () -> {
