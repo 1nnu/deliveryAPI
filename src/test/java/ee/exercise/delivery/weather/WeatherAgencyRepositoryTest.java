@@ -6,6 +6,10 @@ import static org.mockito.Mockito.when;
 
 import ee.exercise.delivery.weather.exceptions.NoResponseBodyFoundException;
 import java.util.List;
+
+import ee.exercise.delivery.weather.model.ObservationsResponse;
+import ee.exercise.delivery.weather.model.WeatherStationResponse;
+import ee.exercise.delivery.weather.repository.WeatherAgencyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;

@@ -3,7 +3,8 @@ package ee.exercise.delivery.rest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ee.exercise.delivery.rest.exceptions.InvalidInputException;
-import ee.exercise.delivery.weather.WeatherRepository;
+import ee.exercise.delivery.rest.service.DeliveryService;
+import ee.exercise.delivery.weather.repository.WeatherRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -1,6 +1,8 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.repository;
 
 import java.util.List;
+
+import ee.exercise.delivery.weather.model.WeatherData;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

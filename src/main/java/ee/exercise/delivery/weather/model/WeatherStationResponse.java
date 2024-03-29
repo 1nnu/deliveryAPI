@@ -1,4 +1,4 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.model;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

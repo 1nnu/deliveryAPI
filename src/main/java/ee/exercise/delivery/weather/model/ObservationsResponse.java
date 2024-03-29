@@ -1,4 +1,4 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.model;
 
 import jakarta.xml.bind.annotation.*;
 import java.util.List;

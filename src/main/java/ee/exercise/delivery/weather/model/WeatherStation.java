@@ -1,4 +1,4 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

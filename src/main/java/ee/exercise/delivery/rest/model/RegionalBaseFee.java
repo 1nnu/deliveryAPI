@@ -1,4 +1,4 @@
-package ee.exercise.delivery.rest;
+package ee.exercise.delivery.rest.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

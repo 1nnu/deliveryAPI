@@ -1,8 +1,14 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import ee.exercise.delivery.weather.model.ObservationsResponse;
+import ee.exercise.delivery.weather.repository.WeatherAgencyRepository;
+import ee.exercise.delivery.weather.repository.WeatherRepository;
+import ee.exercise.delivery.weather.model.WeatherData;
+import ee.exercise.delivery.weather.model.WeatherStationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

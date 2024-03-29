@@ -1,5 +1,6 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.controller;
 
+import ee.exercise.delivery.weather.service.WeatherService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 

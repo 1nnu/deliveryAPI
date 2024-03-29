@@ -1,9 +1,10 @@
-package ee.exercise.delivery.rest;
+package ee.exercise.delivery.rest.service;
 
+import ee.exercise.delivery.rest.model.RegionalBaseFee;
 import ee.exercise.delivery.rest.exceptions.BadWeatherException;
 import ee.exercise.delivery.rest.exceptions.InvalidInputException;
-import ee.exercise.delivery.weather.WeatherData;
-import ee.exercise.delivery.weather.WeatherRepository;
+import ee.exercise.delivery.weather.model.WeatherData;
+import ee.exercise.delivery.weather.repository.WeatherRepository;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

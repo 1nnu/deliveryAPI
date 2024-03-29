@@ -1,5 +1,6 @@
-package ee.exercise.delivery.weather;
+package ee.exercise.delivery.weather.repository;
 
+import ee.exercise.delivery.weather.model.ObservationsResponse;
 import ee.exercise.delivery.weather.exceptions.NoResponseBodyFoundException;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
