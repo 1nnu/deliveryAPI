@@ -50,7 +50,6 @@ class DeliveryServiceTest {
         InvalidInputException.class,
         () -> {
           deliveryService.calculateFee(null, null);
-          ;
         });
   }
 }
