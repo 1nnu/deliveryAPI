@@ -30,9 +30,7 @@ class DeliveryServiceTest {
     Vehicle vehicle = mock(Vehicle.class);
     assertThrows(
         InvalidInputException.class,
-        () -> {
-          deliveryService.calculateFee(city, vehicle);
-        });
+        () -> deliveryService.calculateFee(city, vehicle));
   }
 
   @Test
@@ -41,17 +39,13 @@ class DeliveryServiceTest {
     Vehicle vehicle = Vehicle.CAR;
     assertThrows(
         InvalidInputException.class,
-        () -> {
-          deliveryService.calculateFee(incorrectCity, vehicle);
-        });
+        () -> deliveryService.calculateFee(incorrectCity, vehicle));
   }
 
   @Test
   void calculateFee_inputIsNull() {
     assertThrows(
         InvalidInputException.class,
-        () -> {
-          deliveryService.calculateFee(null, null);
-        });
+        () -> deliveryService.calculateFee(null, null));
   }
 }
