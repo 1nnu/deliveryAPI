@@ -5,11 +5,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ee.exercise.delivery.weather.exceptions.NoResponseBodyFoundException;
-import java.util.List;
-
 import ee.exercise.delivery.weather.model.ObservationsResponse;
 import ee.exercise.delivery.weather.model.WeatherStationResponse;
 import ee.exercise.delivery.weather.repository.WeatherAgencyRepository;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -19,9 +18,11 @@ class WeatherAgencyRepositoryTest {
   private static final String WEATHER_AGENCY_URL =
       "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
 
+  private final String url = "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
+
   private final RestTemplate restTemplate = mock(RestTemplate.class);
   private final WeatherAgencyRepository weatherAgencyRepository =
-      new WeatherAgencyRepository(restTemplate);
+      new WeatherAgencyRepository(restTemplate, url);
 
   @Test
   void getWeatherObservations() {

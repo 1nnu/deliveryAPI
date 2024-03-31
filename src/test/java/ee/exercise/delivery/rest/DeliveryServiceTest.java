@@ -1,8 +1,10 @@
 package ee.exercise.delivery.rest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 import ee.exercise.delivery.rest.exceptions.InvalidInputException;
+import ee.exercise.delivery.rest.model.Vehicle;
 import ee.exercise.delivery.rest.service.DeliveryService;
 import ee.exercise.delivery.weather.repository.WeatherRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,18 +27,18 @@ class DeliveryServiceTest {
   @Test
   void calculateFee_incorrectVehicle() {
     String city = "tallinn";
-    String incorrectVehicle = "boat";
+    Vehicle vehicle = mock(Vehicle.class);
     assertThrows(
         InvalidInputException.class,
         () -> {
-          deliveryService.calculateFee(city, incorrectVehicle);
+          deliveryService.calculateFee(city, vehicle);
         });
   }
 
   @Test
   void calculateFee_incorrectCity() {
     String incorrectCity = "New York";
-    String vehicle = "car";
+    Vehicle vehicle = Vehicle.CAR;
     assertThrows(
         InvalidInputException.class,
         () -> {

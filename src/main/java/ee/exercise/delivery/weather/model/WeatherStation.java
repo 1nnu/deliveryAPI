@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeatherStation {
 
-  @Id private Long id;
-  private String stationName;
+  @Id private String stationName;
 }

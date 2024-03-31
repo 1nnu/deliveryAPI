@@ -1,14 +1,15 @@
 package ee.exercise.delivery.rest.controller;
 
-import ee.exercise.delivery.rest.service.DeliveryService;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
+
 import ee.exercise.delivery.rest.exceptions.BadWeatherException;
 import ee.exercise.delivery.rest.exceptions.InvalidInputException;
-import ee.exercise.delivery.rest.exceptions.ResourceNotFoundException;
+import ee.exercise.delivery.rest.model.Vehicle;
+import ee.exercise.delivery.rest.service.DeliveryService;
 import ee.exercise.delivery.weather.model.WeatherData;
 import ee.exercise.delivery.weather.service.WeatherService;
 import java.util.List;
-
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,14 +41,17 @@ public class DeliveryController {
   /**
    * API endpoint for users to input data Calculates fee based on city and vehicle type
    *
+   * @param vehicle allowed vehicles: CAR, SCOOTER, BIKE
+   * @param city allowed cities: tallinn, tartu, parnu
    * @return String representation of the total fee
    */
   @PostMapping("/delivery/{city}/{vehicle}")
-  public ResponseEntity<String> calculateDeliveryFee(@PathVariable String city, @PathVariable String vehicle) {
+  public ResponseEntity<String> calculateDeliveryFee(
+      @PathVariable String city, @PathVariable Vehicle vehicle) {
     try {
-      return new ResponseEntity<>(deliveryService.calculateFee(city,vehicle),HttpStatusCode.valueOf(200));
-    } catch (ResourceNotFoundException | BadWeatherException | InvalidInputException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatusCode.valueOf(404));
+      return new ResponseEntity<>(deliveryService.calculateFee(city, vehicle), OK);
+    } catch (BadWeatherException | InvalidInputException e) {
+      return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
     }
   }
 }

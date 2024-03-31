@@ -1,14 +1,13 @@
 package ee.exercise.delivery.weather.service;
 
+import ee.exercise.delivery.weather.model.ObservationsResponse;
+import ee.exercise.delivery.weather.model.WeatherData;
+import ee.exercise.delivery.weather.model.WeatherStationResponse;
+import ee.exercise.delivery.weather.repository.WeatherAgencyRepository;
+import ee.exercise.delivery.weather.repository.WeatherRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import ee.exercise.delivery.weather.model.ObservationsResponse;
-import ee.exercise.delivery.weather.repository.WeatherAgencyRepository;
-import ee.exercise.delivery.weather.repository.WeatherRepository;
-import ee.exercise.delivery.weather.model.WeatherData;
-import ee.exercise.delivery.weather.model.WeatherStationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -52,30 +51,22 @@ public class WeatherService {
     List<WeatherStationResponse> weatherDataList =
         observationsResponse.getWeatherStationResponseList();
 
-    for (WeatherStationResponse station : weatherDataList) {
-      if (weatherStations.contains(station.getName())) {
-        WeatherData weatherData =
-            new WeatherData(
-                station.getName(),
-                Integer.parseInt(station.getWmocode()),
-                Float.parseFloat(station.getAirtemperature()),
-                Float.parseFloat(station.getWindspeed()),
-                station.getPhenomenon(),
-                observationsResponse.getTimestamp());
-        weatherRepository.save(weatherData);
-      }
-    }
+    weatherDataList.stream()
+        .filter(station -> weatherStations.contains(station.getName()))
+        .map(
+            station ->
+                new WeatherData(
+                    station.getName(),
+                    Integer.parseInt(station.getWmocode()),
+                    Float.parseFloat(station.getAirtemperature()),
+                    Float.parseFloat(station.getWindspeed()),
+                    station.getPhenomenon(),
+                    observationsResponse.getTimestamp()))
+        .forEach(weatherRepository::save);
   }
 
   private Set<String> findStationNames() {
     String sql = "SELECT ws.STATION_NAME FROM WEATHER_STATION ws";
     return new HashSet<>(jdbcTemplate.queryForList(sql, String.class));
-  }
-
-  // Done manually due to UTF-8 encoding not passing when using data.sql statements
-  public void insertWeatherLocations() {
-    jdbcTemplate.update(
-        "INSERT INTO WEATHER_STATION (ID, STATION_NAME) VALUES (1, 'Tallinn-Harku'), (2, 'Tartu-Tõravere'), (3, 'Pärnu');");
-    log.info("Inserted info into WEATHER_STATION database");
   }
 }

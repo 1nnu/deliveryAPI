@@ -1,8 +1,9 @@
 package ee.exercise.delivery.rest.service;
 
-import ee.exercise.delivery.rest.model.RegionalBaseFee;
 import ee.exercise.delivery.rest.exceptions.BadWeatherException;
 import ee.exercise.delivery.rest.exceptions.InvalidInputException;
+import ee.exercise.delivery.rest.model.RegionalBaseFee;
+import ee.exercise.delivery.rest.model.Vehicle;
 import ee.exercise.delivery.weather.model.WeatherData;
 import ee.exercise.delivery.weather.repository.WeatherRepository;
 import java.util.HashMap;
@@ -25,14 +26,13 @@ public class DeliveryService {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  private Float calculateRegionalBaseFee(String city, String vehicle) {
+  private Float calculateRegionalBaseFee(String city, Vehicle vehicle) {
     try {
       RegionalBaseFee regionalBaseFee = getBaseFee(city);
       return switch (vehicle) {
-        case "car" -> regionalBaseFee.getCarFee();
-        case "scooter" -> regionalBaseFee.getScooterFee();
-        case "bike" -> regionalBaseFee.getBikeFee();
-        default -> throw new InvalidInputException("Provided input is invalid");
+        case CAR -> regionalBaseFee.getCarFee();
+        case SCOOTER -> regionalBaseFee.getScooterFee();
+        case BIKE -> regionalBaseFee.getBikeFee();
       };
     } catch (Exception e) {
       throw new InvalidInputException("Provided input is invalid");
@@ -91,16 +91,16 @@ public class DeliveryService {
    * @param vehicle String provided by call from controller
    * @return String representation of the total fee
    */
-  public String calculateFee(String city, String vehicle) {
+  public String calculateFee(String city, Vehicle vehicle) {
     Float fee = 0.0F;
     fee += calculateRegionalBaseFee(city, vehicle);
     HashMap<String, String> endpointToCityHashMap = getEndpointToCityHashMap();
     WeatherData weatherData = weatherRepository.findLastCityByName(endpointToCityHashMap.get(city));
-    if (vehicle.equals("scooter") || vehicle.equals("bike")) {
+    if (vehicle == Vehicle.SCOOTER || vehicle == Vehicle.BIKE) {
       fee += calculateAirTemperatureFee(weatherData.getAirTemperature());
       fee += calculateWeatherPhenomenonFee(weatherData.getWeatherPhenomenon());
     }
-    if (vehicle.equals("bike")) {
+    if (vehicle == Vehicle.BIKE) {
       fee += calculateWindSpeedFee(weatherData.getWindSpeed());
     }
     return String.valueOf(fee);

@@ -1,12 +1,13 @@
 package ee.exercise.delivery.weather.repository;
 
-import ee.exercise.delivery.weather.model.ObservationsResponse;
 import ee.exercise.delivery.weather.exceptions.NoResponseBodyFoundException;
+import ee.exercise.delivery.weather.model.ObservationsResponse;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -17,8 +18,12 @@ public class WeatherAgencyRepository {
 
   private final RestTemplate restTemplate;
 
-  public WeatherAgencyRepository(RestTemplate restTemplate) {
+  private final String url;
+
+  public WeatherAgencyRepository(
+      RestTemplate restTemplate, @Value("${weather.agency.url}") String url) {
     this.restTemplate = restTemplate;
+    this.url = url;
   }
 
   /**
@@ -27,7 +32,6 @@ public class WeatherAgencyRepository {
    * @return weather observations
    */
   public ObservationsResponse getWeatherObservations() {
-    final String url = "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
 
     log.info("Fetching weather data from {}", url);
     ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

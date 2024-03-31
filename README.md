@@ -24,7 +24,7 @@ This project is made to represent a delivery service fee calculation module. Bas
 
 Step 1: Clone the repository  
 Step 2: Open the project in IntelliJ  
-Step 3: Run the DeliveryApiApplication class  
+Step 3: Run the DeliveryApiApplication class (add "-Dfile.encoding=UTF-8" to VM parameters)
 
 
 ## API Endpoints
@@ -33,7 +33,7 @@ The structure of the endpoints
 ![image](https://github.com/1nnu/deliveryAPI/assets/76624399/9dca3fab-1447-42cb-810e-35b8e3a5270e)
 
 Available cities: tallinn, tartu, parnu  
-Available vehicles: car, scooter, bike  
+Available vehicles: CAR, SCOOTER, BIKE (uppercase)  
 Structure of request: (domain)/delivery/{city}/{vehicle}  
 
 ## Technologies Used
